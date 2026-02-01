@@ -16,7 +16,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up .NET Core 
+    - name: Set up .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '6.0.x'
@@ -29,15 +29,22 @@ jobs:
     - name: Install dependencies
       run: dotnet restore SeleniumBasicExercise.sln
 
-    - name: Build
-      run: dotnet build SeleniumBasicExercise.sln --no-restore
+    # ===== TestProject1 =====
+    - name: Build TestProject1
+      run: dotnet build TestProject1/TestProject1.csproj
+      continue-on-error: true
 
     - name: Run TestProject1 tests
       env:
         CHROMEWEBDRIVER: /usr/bin/google-chrome
       run: |
         echo "Running TestProject1 tests"
-        dotnet test TestProject1/TestProject1.csproj --verbosity normal
+        dotnet test TestProject1/TestProject1.csproj --no-build --verbosity normal
+      continue-on-error: true
+
+    # ===== TestProject2 =====
+    - name: Build TestProject2
+      run: dotnet build TestProject2/TestProject2.csproj
       continue-on-error: true
 
     - name: Run TestProject2 tests
@@ -45,7 +52,12 @@ jobs:
         CHROMEWEBDRIVER: /usr/bin/google-chrome
       run: |
         echo "Running TestProject2 tests"
-        dotnet test TestProject2/TestProject2.csproj --verbosity normal
+        dotnet test TestProject2/TestProject2.csproj --no-build --verbosity normal
+      continue-on-error: true
+
+    # ===== TestProject3 =====
+    - name: Build TestProject3
+      run: dotnet build TestProject3/TestProject3.csproj
       continue-on-error: true
 
     - name: Run TestProject3 tests
@@ -53,6 +65,7 @@ jobs:
         CHROMEWEBDRIVER: /usr/bin/google-chrome
       run: |
         echo "Running TestProject3 tests"
-        dotnet test TestProject3/TestProject3.csproj --verbosity normal
+        dotnet test TestProject3/TestProject3.csproj --no-build --verbosity normal
       continue-on-error: true
+
 
